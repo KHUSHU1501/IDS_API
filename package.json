@@ -1,0 +1,22 @@
+{
+  "name": "ids_api",
+  "version": "0.0.1",
+  "description": "Internal Dispatch System API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "keywords": [],
+  "author": "ABHISHEK KUMAR SINGH",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "stoppable": "^1.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
