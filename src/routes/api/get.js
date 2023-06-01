@@ -1,7 +1,7 @@
 //src/routes/api/get.js
 
 // Sample data - replace with your own database access code
-const db = require("../../../db/db");
+const db = require("../../../db/taskDb");
 
 // Get all tasks
 module.exports = async (req, res) => {

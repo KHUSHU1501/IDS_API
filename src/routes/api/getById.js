@@ -1,7 +1,7 @@
 //src/routes/api/getById.js
 
 // Sample data - replace with your own database access code
-const db = require("../../../db/db");
+const db = require("../../../db/taskDb");
 
 module.exports = async (req, res) => {
   const taskId = parseInt(req.params.taskId);

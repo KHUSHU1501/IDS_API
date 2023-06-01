@@ -1,7 +1,7 @@
 //src/routes/api/post.js
 
 // Sample data - replace with your own database access code
-const db = require("../../../db/db");
+const db = require("../../../db/taskDb");
 
 module.exports = async (req, res) => {
   const newTask = req.body;
