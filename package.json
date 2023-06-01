@@ -8,7 +8,7 @@
     "start": "node src/index.js"
   },
   "keywords": [],
-  "author": "ABHISHEK KUMAR SINGH",
+  "author": "SeneCoders",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",

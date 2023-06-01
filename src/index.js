@@ -1,6 +1,6 @@
 // src/index.js
 
-require('dotenv').config();
+require("dotenv").config();
 
 // Start our server
-require('./server');
+require("./server");
