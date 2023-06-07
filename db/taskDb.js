@@ -2,7 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const taskSchema = new Schema({
-  _id: String,
+  _id: {
+    type: String,
+    required: true,
+  },
   type: {
     type: String,
     required: true,
@@ -44,7 +47,7 @@ module.exports = class TaskDb {
         reject(err);
       });
       db.once("open", () => {
-        this.Task = db.model("TransferTask", taskSchema);
+        this.Task = db.model("TransferTask", taskSchema, "TransferTask");
         resolve();
       });
     });

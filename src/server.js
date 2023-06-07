@@ -1,34 +1,82 @@
-// src/server.js
+const express = require("express");
+const cors = require("cors");
+const app = express();
 
-// We want to gracefully shutdown our server
-const stoppable = require("stoppable");
+const TaskDb = require("../db/taskDb");
+const db = new TaskDb();
 
-// Get our express app instance
-const app = require("./app");
+const HTTP_PORT = process.env.PORT || 8080;
 
-// Get the desired port from the process environment. Default to `8080`
-const port = parseInt(process.env.PORT || 8080, 10);
+app.use(cors());
+require("dotenv").config();
+app.use(express.json());
 
-const taskDb = require("../db/taskDb");
-const db = new taskDb();
+app.get("/", (req, res) => {
+  res.json({ message: "API Listening!" });
+});
 
-// Declare the server variable
-let server;
+// ADD NEW TASK
+app.post("/api/tasks", (req, res) => {
+  db.addNewTask(req.body)
+    .then((newTask) => {
+      res.status(201).json(newTask);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err });
+    });
+});
 
-// Connect to the database first
+// GET TASKS
+app.get("/api/tasks", (req, res) => {
+  db.getAllTasks()
+    .then((tasks) => {
+      res.json(tasks);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
+
+// GET TASK BY ID
+app.get("/api/tasks/:id", (req, res) => {
+  db.getTaskById(req.params.id)
+    .then((task) => {
+      res.json(task);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
+
+// DELETE TASK BY ID
+app.delete("/api/tasks/:id", (req, res) => {
+  db.deleteTaskById(req.params.id)
+    .then(() => {
+      res.status(201).json({ message: "Task Deleted!" });
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err + "Invalid ID!" });
+    });
+});
+
+// UPDATE TASK BY ID
+app.put("/api/tasks/:id", async (req, res) => {
+  try {
+    await db.updateTaskById(req.body, req.params.id);
+    res.json({ message: "Task Updated!" });
+  } catch (err) {
+    res.status(500).json({ message: err });
+  }
+});
+
+// INITIALIZE
 db.connectToDatabase(process.env.MONGODB_CONN_STRING)
   .then(() => {
-    // Start a server listening on this port
-    server = stoppable(
-      app.listen(port, () => {
-        // Log a message that the server has started, and which port it's using.
-        console.log(`Server is running on port ${port}`);
-      })
-    );
+    module.exports = app; // Export the app object
+    app.listen(HTTP_PORT, () => {
+      console.log(`server listening on: ${HTTP_PORT}`);
+    });
   })
-  .catch((error) => {
-    console.error("Error connecting to the database:", error);
-    process.exit(1);
+  .catch((err) => {
+    console.log(err);
   });
-
-module.exports = server;
