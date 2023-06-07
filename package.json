@@ -2,10 +2,10 @@
   "name": "ids_api",
   "version": "0.0.1",
   "description": "Internal Dispatch System API",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test:watch": "jest -c jest.config.js --runInBand --watch --",
-    "test": "jest -c jest.config.js --runInBand --",
+    "test": "jest -c jest.config.js --runInBand --detectOpenHandles",
     "coverage": "jest -c jest.config.js --runInBand --coverage",
     "lint": "eslint --config .eslintrc.js src/**",
     "start": "node src/server.js",
@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "jest": "^29.5.0",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "supertest": "^6.3.3"
   }
 }

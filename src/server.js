@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-
+const { author, version, description } = require("../package.json");
 const TaskDb = require("../db/taskDb");
 const db = new TaskDb();
 
@@ -12,7 +12,15 @@ require("dotenv").config();
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.json({ message: "API Listening!" });
+  res
+    .status(200)
+    .json({
+      message: "API Listening!",
+      author,
+      version,
+      description,
+      status: "ok",
+    });
 });
 
 // ADD NEW TASK
@@ -70,13 +78,17 @@ app.put("/api/tasks/:id", async (req, res) => {
 });
 
 // INITIALIZE
-db.connectToDatabase(process.env.MONGODB_CONN_STRING)
-  .then(() => {
-    module.exports = app; // Export the app object
-    app.listen(HTTP_PORT, () => {
-      console.log(`server listening on: ${HTTP_PORT}`);
+if (require.main === module) {
+  db.connectToDatabase(process.env.MONGODB_CONN_STRING)
+    .then(() => {
+      //module.exports = app; // Export the app object
+      app.listen(HTTP_PORT, () => {
+        console.log(`server listening on: ${HTTP_PORT}`);
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+}
+
+module.exports = app; // Export for unit testing
