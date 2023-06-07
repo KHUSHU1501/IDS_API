@@ -1,34 +1,44 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const taskSchema = new Schema({
-  _id: {
-    type: String,
-    required: true,
+const taskSchema = new Schema(
+  {
+    type: {
+      type: String,
+      required: true,
+    },
+    requestor: {
+      type: String,
+      required: true,
+    },
+    patient: {
+      type: String,
+      required: true,
+    },
+    location: {
+      type: String,
+      required: true,
+    },
+    destination: {
+      type: String,
+      required: true,
+    },
+    isolation: Boolean,
+    notes: [String],
+    status: {
+      type: String,
+      enum: ["active", "delay", "notAssigned", "complete"],
+      default: "notAssigned",
+    },
+    transporter: {
+      type: String,
+      default: "",
+    },
   },
-  type: {
-    type: String,
-    required: true,
-  },
-  requestor: {
-    type: String,
-    required: true,
-  },
-  patient: {
-    type: String,
-    required: true,
-  },
-  location: {
-    type: String,
-    required: true,
-  },
-  destination: {
-    type: String,
-    required: true,
-  },
-  isolation: Boolean,
-  notes: [String],
-});
+  {
+    timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },
+  }
+);
 
 module.exports = class TaskDb {
   constructor() {
@@ -60,7 +70,7 @@ module.exports = class TaskDb {
   }
 
   getAllTasks() {
-    return this.Task.find({}).exec();
+    return this.Task.find({}).select("_id patient").exec();
   }
 
   getTaskById(id) {
@@ -68,7 +78,11 @@ module.exports = class TaskDb {
   }
 
   updateTaskById(data, id) {
-    return this.Task.updateOne({ _id: id }, { $set: data }).exec();
+    return this.Task.updateOne(
+      { _id: id },
+      { $set: data, $inc: { __v: 1 } },
+      { runValidators: true }
+    ).exec();
   }
 
   deleteTaskById(id) {
