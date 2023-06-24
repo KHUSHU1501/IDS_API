@@ -1,7 +1,5 @@
 const request = require("supertest");
 const app = require("../../server");
-const testDb = require("../../../db/taskDb");
-const db = new testDb();
 
 // Get the version and author from our package.json
 const { version, author } = require("../../../package.json");
