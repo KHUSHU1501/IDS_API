@@ -5,9 +5,9 @@ const TaskDb = require("../db/taskDb");
 const db = new TaskDb();
 
 // connect to the database
-db.connectToDatabase(process.env.MONGODB_CONN_STRING);
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
+  await db.connectToDatabase(process.env.MONGODB_CONN_STRING);
   db.getAllTasks()
     .then((tasks) => {
       res.json(tasks);

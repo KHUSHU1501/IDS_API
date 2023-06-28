@@ -3,6 +3,9 @@ const cors = require("cors");
 const app = express();
 const { author, version, description } = require("../package.json");
 
+// We want to gracefully shutdown our server
+const stoppable = require("stoppable");
+
 const HTTP_PORT = process.env.PORT || 8080;
 
 app.use(cors());
@@ -36,6 +39,11 @@ const putRoute = require("./put");
 app.use("/api/tasks", putRoute);
 //#endregion
 
-app.listen(HTTP_PORT, () => {
-  console.log(`API Listening on port ${HTTP_PORT}`);
-});
+const server = stoppable(
+  app.listen(HTTP_PORT, () => {
+    // Log a message that the server has started, and which port it's using.
+    console.log(`Server listening on port ${HTTP_PORT}`);
+  })
+);
+
+module.exports = { app, server };
