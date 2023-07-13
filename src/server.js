@@ -2,13 +2,16 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const { author, version, description } = require("../package.json");
+const corsOptions = {
+  origin: "http://localhost:3000",
+};
 
 // We want to gracefully shutdown our server
 const stoppable = require("stoppable");
 
 const HTTP_PORT = process.env.PORT || 8080;
 
-app.use(cors());
+app.use(cors(corsOptions));
 require("dotenv").config();
 app.use(express.json());
 
