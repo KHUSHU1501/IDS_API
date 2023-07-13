@@ -3,7 +3,7 @@ const cors = require("cors");
 const app = express();
 const { author, version, description } = require("../package.json");
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "*",
 };
 
 // We want to gracefully shutdown our server
