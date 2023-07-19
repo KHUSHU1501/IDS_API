@@ -4,10 +4,9 @@ const router = express.Router();
 const TaskDb = require("../db/taskDb");
 const db = new TaskDb();
 
-// connect to the database
-db.connectToDatabase(process.env.MONGODB_CONN_STRING);
-
-router.delete("/:id", (req, res) => {
+router.delete("/:id", async (req, res) => {
+  // Connect to Database
+  await db.connectToDatabase(process.env.MONGODB_CONN_STRING);
   db.deleteTaskById(req.params.id)
     .then(() => {
       res.status(201).json({ message: "Task Deleted!" });

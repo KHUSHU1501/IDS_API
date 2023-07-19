@@ -4,10 +4,9 @@ const router = express.Router();
 const TaskDb = require("../db/taskDb");
 const db = new TaskDb();
 
-// connect to the database
-db.connectToDatabase(process.env.MONGODB_CONN_STRING);
-
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
+  // Connect to Database
+  await db.connectToDatabase(process.env.MONGODB_CONN_STRING);
   db.addNewTask(req.body)
     .then((newTask) => {
       res.status(201).json(newTask);
