@@ -8,7 +8,7 @@ const stoppable = require("stoppable");
 
 const HTTP_PORT = process.env.PORT || 8080;
 
-app.use(cors());
+app.use(cors);
 require("dotenv").config();
 app.use(express.json());
 
