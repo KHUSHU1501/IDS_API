@@ -56,8 +56,6 @@ describe("/ health check", () => {
   });
 
   afterAll((done) => {
-    setTimeout(() => {
-      server.close(done);
-    }, 4000); // Delay of 5000 ms (5 seconds)
+    server.close(done);
   });
 });
