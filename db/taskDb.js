@@ -80,8 +80,7 @@ module.exports = class TaskDb {
   updateTaskById(data, id) {
     return this.Task.updateOne(
       { _id: id },
-      { $set: data, $inc: { __v: 1 } },
-      { runValidators: true }
+      { $set: data, $inc: { __v: 1 } }
     ).exec();
   }
 
