@@ -70,7 +70,7 @@ module.exports = class TaskDb {
   }
 
   getAllTasks() {
-    return this.Task.find({}).select("_id patient").exec();
+    return this.Task.find({}).exec();
   }
 
   getTaskById(id) {
