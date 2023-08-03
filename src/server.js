@@ -115,7 +115,7 @@ app.post("/api/login", async (req, res) => {
       res.status(401).json({ message: "Authentication failed." });
     } else {
       // Generate a JWT token and send it back to the client
-      const payload = { userName: user.userName };
+      const payload = { userName: user.userName, role: user.role };
       const token = jwt.sign(payload, jwtOptions.secretOrKey);
       res.json({ token });
     }
