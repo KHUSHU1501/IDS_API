@@ -38,6 +38,7 @@ let strategy = new JwtStrategy(jwtOptions, function (jwt_payload, next) {
     // that matches the request payload data
     next(null, {
       userName: jwt_payload.userName,
+      role: jwt_payload.role,
     });
   } else {
     next(null, false);
