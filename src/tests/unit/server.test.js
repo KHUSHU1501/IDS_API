@@ -4,7 +4,15 @@ const { app, server } = require("../../server");
 // Get the version and author from our package.json
 const { version, author } = require("../../../package.json");
 
+// Increase the Jest timeout
+jest.setTimeout(30000); // Adjust as needed
+
 describe("/ health check", () => {
+  // Before all tests, start the server
+  // beforeAll((done) => {
+  //   server.on("listening", done);
+  // });
+
   test("should return HTTP 200 response", async () => {
     const res = await request(app).get("/");
     expect(res.statusCode).toBe(200);

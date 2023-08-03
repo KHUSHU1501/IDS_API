@@ -1,7 +1,28 @@
 const request = require("supertest");
-const { app, server } = require("../../server");
+const { app, server, stopServer } = require("../../server");
 
 describe("GET /api/tasks", () => {
+  let token;
+  const data = { userName: "SeneCoders", password: "password123" };
+  // beforeAll((done) => {
+  //   server.on("listening", done);
+  // });
+
+  test("should return HTTP 200 response", async () => {
+    let res = await request(app)
+      .post("api/login")
+      .send(data, { contentType: "application/json" });
+    console.log(res.body);
+    token = res.body.token;
+    console.log(token);
+
+    res = (await request(app).get("/api/tasks")).set(
+      "Authorization",
+      `JWT ${token}`
+    );
+    expect(res.statusCode).toBe(200);
+  });
+
   test("should return HTTP 200 response", async () => {
     const res = await request(app).get("/api/tasks");
     expect(res.statusCode).toBe(200);
@@ -44,7 +65,8 @@ describe("GET /api/tasks", () => {
     expect(res.headers["content-type"]).toBe("text/html; charset=utf-8");
   });
 
-  afterAll((done) => {
-    server.close(done);
+  // After running all test cases, stop the server
+  afterAll(async () => {
+    await stopServer();
   });
 });
